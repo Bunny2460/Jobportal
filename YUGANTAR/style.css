@@ -1,0 +1,117 @@
+body {
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    background-color: #FCE05F;
+}
+
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+}
+
+h1 {
+    font-size: 24px;
+    color: #333;
+}
+
+nav a {
+    margin: 0 15px;
+    color: #333;
+    text-decoration: none;
+}
+
+.auth-buttons {
+    margin-left: auto;
+}
+
+button {
+    margin-left: 10px;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.register {
+    background-color: #f6f6f6;
+    color: #333;
+}
+
+.login {
+    background-color: #FF4D4D;
+    color: white;
+}
+
+.hero {
+    display: flex;
+    align-items: center;
+    padding: 50px;
+}
+
+.search-info {
+    flex: 1;
+}
+
+h2 {
+    font-size: 16px;
+    color: #333;
+}
+
+h1 {
+    font-size: 48px;
+    margin: 0;
+    font-weight: bold;
+}
+
+span {
+    color: #E4422B; /* Modify as per design */
+}
+
+.search-bar {
+    display: flex;
+    margin: 20px 0;
+}
+
+input[type="text"], select {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+
+.search {
+    background-color: #FF4D4D;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    padding: 10px 20px;
+}
+
+.stats {
+    margin-top: 20px;
+    font-size: 14px;
+}
+
+.profile-image {
+    position: relative;
+    margin-left: 20px;
+}
+
+.badge {
+    position: absolute;
+    top: 10px;
+    left: -10px;
+    background-color: #E4422B; /* Modify as per design */
+    color: white;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 12px;
+}
+
+.profile-image img {
+    width: 200px; /* Adjust based on the image */
+    border-radius: 15px;
+}

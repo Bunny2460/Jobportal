@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Information Portal</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            width: 90%;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            text-align: center;
+            overflow-x: auto;
+        }
+        h2 {
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            white-space: nowrap;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Job Information Portal</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Company</th>
+                    <th>Job Type</th>
+                    <th>Employment Type</th>
+                    <th>Job Title</th>
+                    <th>Location</th>
+                    <th>Salary</th>
+                    <th>Apply Link</th>
+                </tr>
+            </thead>
+            <tbody id="job-list">
+                <!-- Jobs will be inserted here dynamically -->
+            </tbody>
+        </table>
+    </div>
+    <script>
+        async function fetchJobs() {
+            try {
+                const apiUrl = ⁠ https://api.apify.com/v2/datasets/HaLfsDm7xHkQfioNL/items?token=apify_api_3H3HGouAt7LDV4gKXsduuP16KHJeXa0BNBtr ⁠;
+                const response = await fetch(apiUrl, { cache: "no-store" });
+                const jobs = await response.json();
+                const jobList = document.getElementById("job-list");
+                jobList.innerHTML = "";
+                
+                jobs.forEach(job => {
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
+                        <td>${job.company || "N/A"}</td>
+                        <td>${job["jobType/0"] || "N/A"}</td>
+                        <td>${job["jobType/1"] || "N/A"}</td>
+                        <td>${job.positionName || "N/A"}</td>
+                        <td>${job.location || "N/A"}</td>
+                        <td>${job.salary || "Not Disclosed"}</td>
+                        <td><a href="${job.url || "#"}" target="_blank">Apply Now</a></td>
+                    `;
+                    jobList.appendChild(row);
+                });
+            } catch (error) {
+                console.error("Error fetching jobs:", error);
+            }
+        }
+        
+        window.onload = fetchJobs;
+    </script>
+</body>
+</html>
