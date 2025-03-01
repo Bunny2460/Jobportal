@@ -1,0 +1,56 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+.hero-section {
+    background: url('bc.jpg') no-repeat center center/cover;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
+    position: relative;
+}
+
+.content {
+    max-width: 600px;
+}
+
+h2 {
+    font-size: 60px;
+    font-weight: bold;
+    margin: 0;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+.search-box {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.search-box input, .search-box select, .search-box button {
+    padding: 10px;
+    border: none;
+    font-size: 16px;
+    border-radius: 5px;
+}
+
+.search-box input {
+    flex: 1;
+}
+
+.search-box button {
+    background-color: red;
+    color: white;
+    cursor: pointer;
+}
+
+.highlight {
+    margin-top: 10px;
+    color: #ff5733;
+    font-weight: bold;
+}

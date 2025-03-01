@@ -1,0 +1,426 @@
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Resume Builder</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&amp;display=swap" rel="stylesheet" />
+    <style>
+      .hidden {
+        display: none;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-100 font-roboto">
+    <header style="display: flex; justify-content: space-between; align-items: center; 
+              background-color: #333333; color: white; padding: 10px 20px;">
+    <h1 style="margin: 0;"><strong> Profile Builder</strong> </h1>
+    <button id="home-btn" style="background-color: #007BFF; color: white; 
+                                 border: none; padding: 8px 15px; 
+                                 cursor: pointer; border-radius: 5px;">Home</button>
+</header>
+    <div class="flex flex-col md:flex-row">
+      <!-- Sidebar -->
+      <div class="bg-white w-full md:w-1/4 p-6 border-r border-gray-200">
+        <div class="space-y-6">
+          <!-- Personal Info Section -->
+          <div class="border-b border-gray-300 pb-4">
+            <h2 class="text-lg font-semibold flex justify-between items-center cursor-pointer" onclick="toggleSection('personal-info')">
+              Personal Info
+              <i class="fas fa-minus text-gray-500"></i>
+            </h2>
+            <div class="mt-4 space-y-4" id="personal-info">
+              <div class="flex items-center space-x-4">
+                <img id="profile-photo" src="https://via.placeholder.com/100" alt="Profile Photo" class="w-24 h-24 rounded-full border border-gray-300 object-cover" />
+                <div>
+                  <label class="block text-sm font-semibold" for="upload-photo">Upload Photo</label>
+                  <input type="file" id="upload-photo" class="mt-2" onchange="updateProfilePhoto(event)" />
+                </div>
+              </div>
+              <input class="w-full border border-gray-300 p-3 rounded-md shadow-sm" id="full-name" oninput="updateDashboard()" placeholder="Full Name" type="text" />
+              <input class="w-full border border-gray-300 p-3 rounded-md shadow-sm" id="headline" oninput="updateDashboard()" placeholder="Headline (e.g. Software Engineer)" type="text" />
+              <input class="w-full border border-gray-300 p-3 rounded-md shadow-sm" id="phone-number" oninput="updateDashboard()" placeholder="Phone Number" type="text" />
+              <input class="w-full border border-gray-300 p-3 rounded-md shadow-sm" id="email" oninput="updateDashboard()" placeholder="Email Address" type="text" />
+              <input class="w-full border border-gray-300 p-3 rounded-md shadow-sm" id="address" oninput="updateDashboard()" placeholder="Address" type="text" />
+            </div>
+          </div>
+
+          <!-- Professional Summary Section -->
+          <div class="border-b border-gray-300 pb-4">
+            <h2 class="text-lg font-semibold flex justify-between items-center cursor-pointer" onclick="toggleSection('professional-summary')">
+              Professional Summary
+              <i class="fas fa-plus text-gray-500"></i>
+            </h2>
+            <div class="hidden mt-4 space-y-4" id="professional-summary">
+              <textarea class="w-full border border-gray-300 p-3 rounded-md shadow-sm" id="about-me" oninput="updateDashboard()" placeholder="About Me (Short Bio)"></textarea>
+              <div>
+                <label class="block text-sm font-semibold">Key Strengths & Skills</label>
+                <div class="grid grid-cols-2 gap-4">
+                  <label class="flex items-center">
+                    <input type="checkbox" class="mr-2" id="strength1" onchange="updateDashboard()" />
+                    Communication
+                  </label>
+                  <label class="flex items-center">
+                    <input type="checkbox" class="mr-2" id="strength2" onchange="updateDashboard()" />
+                    Leadership
+                  </label>
+                  <label class="flex items-center">
+                    <input type="checkbox" class="mr-2" id="strength3" onchange="updateDashboard()" />
+                    Problem-Solving
+                  </label>
+                  <label class="flex items-center">
+                    <input type="checkbox" class="mr-2" id="strength4" onchange="updateDashboard()" />
+                    Teamwork
+                  </label>
+                  <label class="flex items-center">
+                    <input type="checkbox" class="mr-2" id="strength5" onchange="updateDashboard()" />
+                    Adaptability
+                  </label>
+                </div>
+                <input class="w-full border border-gray-300 p-3 rounded-md shadow-sm mt-2" id="other-strength" oninput="updateDashboard()" placeholder="Add Custom Strength (Optional)" type="text" />
+              </div>
+              <input class="w-full border border-gray-300 p-3 rounded-md shadow-sm" id="industry-domain" oninput="updateDashboard()" placeholder="Industry / Domain Expertise" type="text" />
+              <input class="w-full border border-gray-300 p-3 rounded-md shadow-sm" id="years-of-experience" oninput="updateDashboard()" placeholder="Years of Experience" type="text" />
+              <textarea class="w-full border border-gray-300 p-3 rounded-md shadow-sm" id="career-highlights" oninput="updateDashboard()" placeholder="Career Highlights / Achievements"></textarea>
+            </div>
+          </div>
+
+          <!-- Education Section -->
+          <div class="border-b border-gray-300 pb-4">
+            <h2 class="text-lg font-semibold flex justify-between items-center cursor-pointer" onclick="toggleSection('education')">
+              Education
+              <i class="fas fa-plus text-gray-500"></i>
+            </h2>
+            <div class="hidden mt-4 space-y-2" id="education">
+              <input class="w-full border border-gray-300 p-2 rounded-md" id="degree-name" oninput="updateDashboard()" placeholder="Degree Name (B.Tech, M.Tech, etc.)" type="text" />
+              <input class="w-full border border-gray-300 p-2 rounded-md" id="field-study" oninput="updateDashboard()" placeholder="Field of Study (IT, Computer Science, etc.)" type="text" />
+              <input class="w-full border border-gray-300 p-2 rounded-md" id="university-name" oninput="updateDashboard()" placeholder="University / College Name" type="text" />
+              <div class="flex space-x-2">
+                <input class="w-1/2 border border-gray-300 p-2 rounded-md" id="start-year" oninput="updateDashboard()" placeholder="Start Year" type="text" />
+                <input class="w-1/2 border border-gray-300 p-2 rounded-md" id="end-year" oninput="updateDashboard()" placeholder="End Year" type="text" />
+              </div>
+              <input class="w-full border border-gray-300 p-2 rounded-md" id="gpa" oninput="updateDashboard()" placeholder="GPA / Percentage (Optional)" type="text" />
+              <input class="w-full border border-gray-300 p-2 rounded-md" id="certifications" oninput="updateDashboard()" placeholder="Certifications &amp; Courses (e.g., IBM Data Fundamentals)" type="text" />
+            </div>
+          </div>
+
+          <!-- Work Experience Section -->
+          <div class="border-b border-gray-300 pb-4">
+            <h2 class="text-lg font-semibold flex justify-between items-center cursor-pointer" onclick="toggleSection('work-experience')">
+              Work Experience
+              <i class="fas fa-plus text-gray-500"></i>
+            </h2>
+            <div class="hidden mt-4 space-y-2" id="work-experience">
+              <input class="w-full border border-gray-300 p-2 rounded-md" id="company-name" oninput="updateDashboard()" placeholder="Company Name" type="text" />
+              <input class="w-full border border-gray-300 p-2 rounded-md" id="job-title" oninput="updateDashboard()" placeholder="Job Title" type="text" />
+              <div class="flex space-x-2">
+                <input class="w-1/2 border border-gray-300 p-2 rounded-md" id="job-start-year" oninput="updateDashboard()" placeholder="Start Year" type="text" />
+                <input class="w-1/2 border border-gray-300 p-2 rounded-md" id="job-end-year" oninput="updateDashboard()" placeholder="End Year / Present" type="text" />
+              </div>
+              <textarea class="w-full border border-gray-300 p-2 rounded-md" id="responsibilities" oninput="updateDashboard()" placeholder="Responsibilities & Key Contributions"></textarea>
+              <input class="w-full border border-gray-300 p-2 rounded-md" id="technologies-used" oninput="updateDashboard()" placeholder="Technologies Used" type="text" />
+              <textarea class="w-full border border-gray-300 p-2 rounded-md" id="achievements" oninput="updateDashboard()" placeholder="Achievements / Awards"></textarea>
+            </div>
+          </div>
+
+          <!-- Websites & Social Links Section -->
+          <div class="border-b border-gray-300 pb-4">
+            <h2 class="text-lg font-semibold flex justify-between items-center cursor-pointer" onclick="toggleSection('websites-social-links')">
+              Websites & Social Links
+              <i class="fas fa-plus text-gray-500"></i>
+            </h2>
+            <div class="hidden mt-4 space-y-2" id="websites-social-links">
+              <input class="w-full border border-gray-300 p-2 rounded-md" id="portfolio-website" oninput="updateDashboard()" placeholder="Personal Portfolio Website" type="text" />
+              <input class="w-full border border-gray-300 p-2 rounded-md" id="linkedin-profile" oninput="updateDashboard()" placeholder="LinkedIn Profile" type="text" />
+              <input class="w-full border border-gray-300 p-2 rounded-md" id="github-profile" oninput="updateDashboard()" placeholder="GitHub Profile" type="text" />
+              <input class="w-full border border-gray-300 p-2 rounded-md" id="twitter-handle" oninput="updateDashboard()" placeholder="Twitter / X Handle" type="text" />
+              <input class="w-full border border-gray-300 p-2 rounded-md" id="medium-profile" oninput="updateDashboard()" placeholder="Medium / Dev.to" type="text" />
+              <input class="w-full border border-gray-300 p-2 rounded-md" id="other-social-links" oninput="updateDashboard()" placeholder="Other Social Links (Behance, Dribbble, etc.)" type="text" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Content -->
+      <div class="flex-1 p-6">
+        <!-- Parent Div: Two Columns Layout -->
+        <div class="bg-white p-6 rounded-lg shadow-lg grid grid-cols-1 md:grid-cols-2 gap-8">
+          
+          <!-- Left Column: Profile and Contact Details -->
+          <div class="space-y-8">
+            <!-- Profile Section -->
+            <div class="flex items-center space-x-6 mb-8">
+              <img id="profile-picture-display" alt="Profile picture" class="w-24 h-24 rounded-full object-cover shadow-md" src="https://via.placeholder.com/100" />
+              <div>
+                <h1 class="text-3xl font-semibold text-gray-800" id="full-name-display">David St. Peter</h1>
+                <p class="text-gray-600 text-lg" id="headline-display">UX Designer</p>
+              </div>
+            </div>
+      
+            <!-- Contact Details Section -->
+            <div class="mb-8">
+              <h2 class="text-2xl font-semibold text-gray-800 mb-4">Contact Details</h2>
+              <div class="space-y-2">
+                <p class="text-gray-700"><strong>Phone:</strong> <span id="phone-number-display">123-456-7890</span></p>
+                <p class="text-gray-700"><strong>Email:</strong> <span id="email-display">email@example.com</span></p>
+                <p class="text-gray-700"><strong>Address:</strong> <span id="address-display">123 Street, City</span></p>
+              </div>
+            </div>
+      
+            <!-- Professional Summary Section -->
+            <div class="mb-8">
+              <h2 class="text-2xl font-semibold text-gray-800 mb-4">Professional Summary</h2>
+              <div class="border-l-4 border-blue-500 pl-4">
+                <p class="text-gray-700"><strong>About Me:</strong> <span id="about-me-display">Experienced UX Designer passionate about creating intuitive and user-friendly interfaces.</span></p>
+                <p class="text-gray-700"><strong>Key Strengths:</strong> <span id="strengths-display">Communication, Leadership</span></p>
+                <p class="text-gray-700"><strong>Industry Expertise:</strong> <span id="industry-domain-display">Technology, SaaS</span></p>
+                <p class="text-gray-700"><strong>Experience:</strong> <span id="years-of-experience-display">5 years</span></p>
+                <p class="text-gray-700"><strong>Career Highlights:</strong> <span id="career-highlights-display">Led successful product redesign projects</span></p>
+              </div>
+            </div>
+          </div>
+      
+          <!-- Right Column: Education, Work Experience, Websites & Social Links -->
+          <div class="space-y-8">
+            <!-- Education Section -->
+            <div class="mb-8">
+              <h2 class="text-2xl font-semibold text-gray-800 mb-4">Education</h2>
+              <p class="text-gray-700"><strong>Degree:</strong> <span id="degree-name-display">Bachelor of Technology</span></p>
+              <p class="text-gray-700"><strong>Field of Study:</strong> <span id="field-study-display">Computer Science</span></p>
+              <p class="text-gray-700"><strong>University:</strong> <span id="university-name-display">XYZ University</span></p>
+              <p class="text-gray-700"><strong>Years:</strong> <span id="education-years-display">2015 - 2019</span></p>
+            </div>
+      
+            <!-- Work Experience Section -->
+            <div class="mb-8">
+              
+              <h2 class="text-2xl font-semibold text-gray-800 mb-4">Work Experience</h2>
+              <p class="text-gray-700"><strong>Company:</strong> <span id="company-name-display">Tech Corp</span></p>
+              <p class="text-gray-700"><strong>Job Title:</strong> <span id="job-title-display">Software Engineer</span></p>
+              <p class="text-gray-700"><strong>Years:</strong> <span id="job-years-display">2019 - Present</span></p>
+            </div>
+      
+            <!-- Websites & Social Links Section -->
+            <div class="mb-8">
+              <h2 class="text-2xl font-semibold text-gray-800 mb-4">Websites & Social Links</h2>
+              <div class="space-y-2">
+                <p class="text-gray-700"><strong>Portfolio:</strong> <span id="portfolio-website-display">www.myportfolio.com</span></p>
+                <p class="text-gray-700"><strong>LinkedIn:</strong> <span id="linkedin-profile-display">linkedin.com/in/davidstpeter</span></p>
+                <p class="text-gray-700"><strong>GitHub:</strong> <span id="github-profile-display">github.com/davidstpeter</span></p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="flex justify-center mt-8">
+          <button id="download-resume" class="bg-blue-500 text-white px-6 py-2 rounded-md shadow-lg hover:bg-blue-700"  "onclick="downloadResume()">
+            Download Resume
+          </button>
+        </div>
+      </div>
+     
+      
+      
+
+    <script>
+      function toggleSection(sectionId) {
+        const section = document.getElementById(sectionId);
+        const icon = section.previousElementSibling.querySelector("i");
+        section.classList.toggle("hidden");
+        icon.classList.toggle("fa-plus");
+        icon.classList.toggle("fa-minus");
+      }
+
+      function updateProfilePhoto(event) {
+        const file = event.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = function (e) {
+            document.getElementById('profile-photo').src = e.target.result;
+            document.getElementById('profile-picture-display').src = e.target.result;
+          };
+          reader.readAsDataURL(file);
+        }
+      }
+
+      function updateDashboard() {
+        // Personal Info
+        document.getElementById('full-name-display').textContent = document.getElementById('full-name').value;
+        document.getElementById('headline-display').textContent = document.getElementById('headline').value;
+        document.getElementById('phone-number-display').textContent = document.getElementById('phone-number').value;
+        document.getElementById('email-display').textContent = document.getElementById('email').value;
+        document.getElementById('address-display').textContent = document.getElementById('address').value;
+
+        // Professional Summary
+        document.getElementById('about-me-display').textContent = document.getElementById('about-me').value;
+
+        const strengths = [];
+        if (document.getElementById('strength1').checked) strengths.push('Communication');
+        if (document.getElementById('strength2').checked) strengths.push('Leadership');
+        if (document.getElementById('strength3').checked) strengths.push('Problem-Solving');
+        if (document.getElementById('strength4').checked) strengths.push('Teamwork');
+        if (document.getElementById('strength5').checked) strengths.push('Adaptability');
+        if (document.getElementById('other-strength').value) strengths.push(document.getElementById('other-strength').value);
+        document.getElementById('strengths-display').textContent = strengths.join(', ');
+
+        document.getElementById('industry-domain-display').textContent = document.getElementById('industry-domain').value;
+        document.getElementById('years-of-experience-display').textContent = document.getElementById('years-of-experience').value;
+        document.getElementById('career-highlights-display').textContent = document.getElementById('career-highlights').value;
+
+        // Education
+        document.getElementById('degree-name-display').textContent = document.getElementById('degree-name').value;
+        document.getElementById('field-study-display').textContent = document.getElementById('field-study').value;
+        document.getElementById('university-name-display').textContent = document.getElementById('university-name').value;
+        document.getElementById('education-years-display').textContent = `${document.getElementById('start-year').value} - ${document.getElementById('end-year').value}`;
+
+        // Work Experience
+        document.getElementById('company-name-display').textContent = document.getElementById('company-name').value;
+        document.getElementById('job-title-display').textContent = document.getElementById('job-title').value;
+        document.getElementById('job-years-display').textContent = `${document.getElementById('job-start-year').value} - ${document.getElementById('job-end-year').value}`;
+
+        // Websites & Social Links
+        document.getElementById('portfolio-website-display').textContent = document.getElementById('portfolio-website').value;
+        document.getElementById('linkedin-profile-display').textContent = document.getElementById('linkedin-profile').value;
+        document.getElementById('github-profile-display').textContent = document.getElementById('github-profile').value;
+      }
+
+      // Initially hide all dropdowns except the first two
+      document.getElementById('professional-summary').classList.add('hidden');
+      document.getElementById('education').classList.add('hidden');
+      document.getElementById('work-experience').classList.add('hidden');
+      document.getElementById('websites-social-links').classList.add('hidden');
+    </script>
+    <!-- Download Resume Button -->
+    
+  </body>
+  
+  
+  <script>
+    document.getElementById('download-resume').addEventListener('click', function() {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        
+        
+
+    
+        // Title Section with Styling
+        doc.setFontSize(24);
+        doc.setFont('helvetica', 'bold');
+        doc.setTextColor(0, 51, 153); // Dark Blue Title
+        doc.text('Resume', 14, 20);
+        doc.setDrawColor(0, 102, 204);  // Set color for horizontal lines (blue)
+        doc.setLineWidth(1);
+        doc.line(14, 25, 200, 25); // Thicker Blue Line below title
+    
+        // Profile Section
+        doc.setFontSize(16);
+        doc.setTextColor(0, 0, 0); // Black color for text
+        doc.setFont('helvetica', 'bold');
+        doc.text('Personal Information', 14, 35);
+        doc.setFontSize(12);
+        doc.setFont('helvetica', 'normal');
+        doc.text('Name: ' + document.getElementById('full-name-display').textContent, 14, 45);
+        doc.text('Headline: ' + document.getElementById('headline-display').textContent, 14, 52);
+        doc.text('Phone: ' + document.getElementById('phone-number-display').textContent, 14, 59);
+        doc.text('Email: ' + document.getElementById('email-display').textContent, 14, 66);
+        doc.text('Address: ' + document.getElementById('address-display').textContent, 14, 73);
+        
+        doc.setDrawColor(0, 102, 204);
+        doc.line(14, 78, 200, 78);
+    
+        // Professional Summary
+        doc.setFontSize(16);
+        doc.setFont('helvetica', 'bold');
+        doc.setTextColor(0, 51, 153);
+        doc.text('Professional Summary', 14, 90);
+        doc.setFontSize(12);
+        doc.setFont('helvetica', 'normal');
+        doc.setTextColor(0, 0, 0);
+        doc.text('About Me:', 14, 100);
+        doc.setTextColor(80, 80, 80);
+        doc.text(document.getElementById('about-me-display').textContent, 30, 100, { maxWidth: 170 });
+        
+        doc.setTextColor(0, 0, 0);
+        doc.text('Key Strengths:', 14, 110);
+        doc.setTextColor(80, 80, 80);
+        doc.text(document.getElementById('strengths-display').textContent, 30, 110, { maxWidth: 170 });
+    
+        doc.setTextColor(0, 0, 0);
+        doc.text('Industry Expertise:', 14, 120);
+        doc.setTextColor(80, 80, 80);
+        doc.text(document.getElementById('industry-domain-display').textContent, 30, 120, { maxWidth: 170 });
+    
+        doc.setDrawColor(0, 102, 204);
+        doc.line(14, 130, 200, 130);
+    
+        // Education Section
+        doc.setFontSize(16);
+        doc.setFont('helvetica', 'bold');
+        doc.setTextColor(0, 51, 153);
+        doc.text('Education', 14, 140);
+        doc.setFontSize(12);
+        doc.setFont('helvetica', 'normal');
+        doc.setTextColor(0, 0, 0);
+        doc.text('Degree: ' + document.getElementById('degree-name-display').textContent, 14, 150);
+        doc.text('Field of Study: ' + document.getElementById('field-study-display').textContent, 14, 157);
+        doc.text('University: ' + document.getElementById('university-name-display').textContent, 14, 164);
+        doc.text('Years: ' + document.getElementById('education-years-display').textContent, 14, 171);
+    
+        doc.setDrawColor(0, 102, 204);
+        doc.line(14, 175, 200, 175);
+    
+        // Work Experience
+        doc.setFontSize(16);
+        doc.setFont('helvetica', 'bold');
+        doc.setTextColor(0, 51, 153);
+        doc.text('Work Experience', 14, 185);
+        doc.setFontSize(12);
+        doc.setFont('helvetica', 'normal');
+        doc.setTextColor(0, 0, 0);
+        doc.text('Company: ' + document.getElementById('company-name-display').textContent, 14, 195);
+        doc.text('Job Title: ' + document.getElementById('job-title-display').textContent, 14, 202);
+        doc.text('Years: ' + document.getElementById('job-years-display').textContent, 14, 209);
+    
+        doc.setDrawColor(0, 102, 204);
+        doc.line(14, 215, 200, 215);
+    
+        // Social Links
+        doc.setFontSize(16);
+        doc.setFont('helvetica', 'bold');
+        doc.setTextColor(0, 51, 153);
+        doc.text('Websites & Social Links', 14, 225);
+        doc.setFontSize(12);
+        doc.setFont('helvetica', 'normal');
+        doc.setTextColor(0, 0, 0);
+    
+        // Using bullet points for social links
+        let y = 235;
+        const socialLinks = [
+            { label: 'Portfolio', id: 'portfolio-website-display' },
+            { label: 'LinkedIn', id: 'linkedin-profile-display' },
+            { label: 'GitHub', id: 'github-profile-display' }
+        ];
+    
+        socialLinks.forEach(link => {
+            let text = document.getElementById(link.id).textContent;
+            if (text.trim() !== '') {
+                doc.text('• ' + link.label + ': ' + text, 14, y);
+                y += 8;
+            }
+        });
+    
+        doc.setDrawColor(0, 102, 204);
+        doc.line(14, y + 5, 200, y + 5);
+    
+        // Download the resume as PDF
+        doc.save('styled_resume.pdf');
+    });
+    </script>
+    
+ 
+</html>
+
+
+
