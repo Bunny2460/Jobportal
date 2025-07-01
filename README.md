@@ -6,10 +6,6 @@ This project is a **Job Search and Resume Builder Web Portal** integrating real-
 
 ---
 
-## 📄 README.md
-
-### Project Title: **Job Portal and Resume Builder Web Application**
-
 ### 💡 Overview
 
 A feature-rich web application designed to help users:
