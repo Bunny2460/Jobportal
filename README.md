@@ -1,5 +1,3 @@
-Here is a **README** and a **short summary** for your uploaded project files.
-
 ---
 
 ## 📘 Project Summary
@@ -88,4 +86,3 @@ A feature-rich web application designed to help users:
 
 ---
 
-Let me know if you'd like the `README.md` formatted as a file for download or need GitHub deployment steps too.
